@@ -54,7 +54,7 @@ class App extends React.Component {
       this.findDomNoteHandler = this.findDomNodeHandler.bind(this);
    }
    findDomNodeHandler() {
-      var myDiv = document.getElementById('myDiv');
+      var myDiv = document.createElement('myDiv');
       ReactDOM.findDOMNode(myDiv).style.color = 'red'
    }
    render() {
