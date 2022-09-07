@@ -20,17 +20,18 @@ class AddTask extends React.Component {
     changeName=(e) => {
         this.setState({name: e.target.value});
     }
+
     render(){
-return(
-    <div className="App">
-    <App />
-    {/* <h3>THêm mới</h3>
-    <label>Tên task</label> */}
-    <input type="text" onChange={this.changeName}></input>
-    <button type="submit" onClick={this.handleAddTask}>Thêm</button>
-    <button type="submit" onClick={this.linkList}>Trở về</button>
-    </div>
-)
+        return(
+            <div className="App">
+            <App />
+            {/* <h3>THêm mới</h3>
+            <label>Tên task</label> */}
+            <input type="text" onChange={this.changeName}></input>
+            <button type="submit" onClick={this.handleAddTask}>Thêm</button>
+            <button type="submit" onClick={this.linkList}>Trở về</button>
+            </div>
+    )
 
 // CHuyển trang
 

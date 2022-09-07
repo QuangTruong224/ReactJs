@@ -33,8 +33,6 @@ render() {
     } else {
         return (
             <div className="container">
-                <br />
-                <br />
                 <button type="button" className="btn btn-outline-primary" onClick={this.setStatus} >Thêm mới</button>
                 <h2>Danh sách</h2>
                 <table className="table table-striped">
