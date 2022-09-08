@@ -17,7 +17,6 @@ updateState() {
 render() {
   return (
     <div>
-      llll
 <Content  updateStateProps={this.updateState}  myDataProp={this.state.data} />
     </div>
   )
