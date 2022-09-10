@@ -1,19 +1,17 @@
 import React from "react";
-import ProductItems from "../ProductItems/ProductItems";
-
 class ProductList extends React.Component {
   render() {
     return (
       <div>
         <div className="container">
-          <h2>List customer</h2>
+          <h2>List Product</h2>
           <h2>
             <a href="/#">
-              <button className="btn btn-primary">Create New Customer</button>
+              <button className="btn btn-primary">Create New Product</button>
             </a>
           </h2>
 
-          <p className="mt-3">Searching customer </p>
+          <p className="mt-3">Searching Product </p>
           <div className="form-inline my-lg-3">
             <div className="row">
               <div className="col">
@@ -45,10 +43,6 @@ class ProductList extends React.Component {
                 >
                   <option value="">Select customerType</option>
                   <option value="Diamond"> Diamond</option>
-                  <option value="Platinum"> Platinum</option>
-                  <option value="Gold"> Gold</option>
-                  <option value="Silver"> Silver</option>
-                  <option value="Member"> Member</option>
                 </select>
               </div>
             </div>
@@ -76,11 +70,7 @@ class ProductList extends React.Component {
                 <th scope="col">Sửa</th>
               </tr>
             </thead>
-            <tbody>
-              <ProductItems />
-              <ProductItems />
-              <ProductItems />
-            </tbody>
+            <tbody>{this.props.children}</tbody>
           </table>
         </div>
       </div>
