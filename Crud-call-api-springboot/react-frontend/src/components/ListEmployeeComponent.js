@@ -51,13 +51,13 @@ class ListEmployeeComponent extends Component {
         </div>
         <br></br>
         <div className="row">
-          <table className="table table-striped table-bordered">
-            <thead>
+          <table className="table">
+            <thead className="thead-dark">
               <tr>
-                <th> Employee First Name</th>
-                <th> Employee Last Name</th>
-                <th> Employee Email Id</th>
-                <th> Actions</th>
+                <th scope="col"> First Name</th>
+                <th scope="col"> Last Name</th>
+                <th scope="col"> Email </th>
+                <th scope="col"> Actions</th>
               </tr>
             </thead>
             <tbody>
