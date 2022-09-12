@@ -58,7 +58,9 @@ class ListEmployeeComponent extends Component {
                 <th scope="col"> Name</th>
                 <th scope="col"> dateBirth</th>
                 <th scope="col"> address </th>
-                <th scope="col"> Actions</th>
+                <th scope="col"> Update</th>
+                <th scope="col"> Delete</th>
+                <th scope="col"> View</th>
               </tr>
             </thead>
             <tbody>
@@ -75,18 +77,22 @@ class ListEmployeeComponent extends Component {
                     >
                       Update{" "}
                     </button>
+                  </td>
+                  <td>
                     <button
                       type="button"
                       data-toggle="modal"
                       data-target="#exampleModal"
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: "5px" }}
                       onClick={() => this.deleteEmployee(employee.id)}
                       className="btn btn-danger"
                     >
                       Delete{" "}
                     </button>
+                  </td>
+                  <td>
                     <button
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: "5px" }}
                       onClick={() => this.viewEmployee(employee.id)}
                       className="btn btn-info"
                     >
