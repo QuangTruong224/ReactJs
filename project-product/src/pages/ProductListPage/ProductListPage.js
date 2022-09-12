@@ -5,20 +5,31 @@ import axios from "axios";
 import ProductItems from "../../components/ProductItems/ProductItems";
 // Tích hợp React-router
 class ProductListPage extends React.Component {
-  render() {
-    // var { products } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+    };
+  }
+  componentDidMount() {
     axios({
       method: "GET",
-      url: "http://localhost:3005/posts",
+      url: "http://localhost:3000/products",
       data: null,
     })
       .then((res) => {
         console.log(res);
+        this.setState({
+          products: res.data,
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-    var products = [];
+  }
+   
+  render() {
+    var { products } = this.state;
     return (
       <div>
         <ProductList>{this.displayProductList(products)}</ProductList>

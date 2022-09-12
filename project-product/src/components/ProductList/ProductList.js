@@ -55,10 +55,7 @@ class ProductList extends React.Component {
               </button>
             </div>
           </div>
-          <table
-            id="tableStudent"
-            className="table table-borderless table-striped"
-          >
+          <table id="tableStudent" className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
                 <th scope="col">STT</th>
