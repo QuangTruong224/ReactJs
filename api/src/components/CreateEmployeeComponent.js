@@ -5,8 +5,9 @@ class CreateEmployeeComponent extends Component {
   constructor(props) {
     super(props);
     // this.departmentList = [];
+    //  departments:Array<string>  [];
+    //  departmentList: any;
 
-    console.log(this.departmentId);
     this.state = {
       // step 2
       id: this.props.match.params.id,
@@ -19,27 +20,26 @@ class CreateEmployeeComponent extends Component {
     this.changeDateBirthHandler = this.changeDateBirthHandler.bind(this);
     this.changeDepartmentHandler = this.changeDepartmentHandler.bind(this);
     this.changeAddressHandler = this.changeAddressHandler.bind(this);
+    this.changeDepartmentIdHandler = this.changeDepartmentIdHandler.bind(this);
     this.saveOrUpdateEmployee = this.saveOrUpdateEmployee.bind(this);
+    // console.log("sss", this.state.department);
   }
+
   // async getOptions() {
-  //   EmployeeService.getDepartment().then((res) => {
-  //     this.setState({ department: res.data });
-  //     console.log(res);
+  //   EmployeeService.getDepartmentId(this.state.departmentId).then((res) => {
+  //     // this.setState({ departmentId: res.data });
+  //     this.state.departmentId = res.data;
   //   });
   // }
   // step 3
   componentDidMount() {
     // step 4
     if (this.state.id === "_add") {
-      // this.getOptions();
       EmployeeService.getDepartment().then((res) => {
         this.setState({ department: res.data });
-
-        this.departmentList = res.data;
-        console.log(res.data);
-        // console.log(this.departmentList);
+        // this.department = res.data;
+        console.log("s1232", this.state.department);
       });
-
       return;
     } else {
       EmployeeService.getEmployeeById(this.state.id).then((res) => {
@@ -61,12 +61,14 @@ class CreateEmployeeComponent extends Component {
       address: this.state.address,
       // department: this.state.department,
     };
-    console.log("employee => " + JSON.stringify(employee));
 
-    // step 5
+    console.log("employee => " + JSON.stringify(employee));
+    console.log(employee);
     if (this.state.id === "_add") {
+      // this.getOptions();
       EmployeeService.createEmployee(employee).then((res) => {
         this.props.history.push("/employees");
+        console.log(res);
       });
     } else {
       EmployeeService.updateEmployee(employee, this.state.id).then((res) => {
@@ -74,7 +76,11 @@ class CreateEmployeeComponent extends Component {
       });
     }
   };
-
+  changeDepartmentIdHandler = (event) => {
+    console.log("sssid", event.target.value);
+    // this.setState({ departmentId: event.target.value });
+    this.setState({ departmentId: event.target.value });
+  };
   changeNameHandler = (event) => {
     this.setState({ name: event.target.value });
   };
@@ -86,8 +92,9 @@ class CreateEmployeeComponent extends Component {
   changeAddressHandler = (event) => {
     this.setState({ address: event.target.value });
   };
+
   changeDepartmentHandler = (event) => {
-    console.log(event.value);
+    console.log("ss", event.target.value);
     this.setState({ department: event.target.value });
   };
   cancel() {
@@ -154,13 +161,15 @@ class CreateEmployeeComponent extends Component {
                       options={options}
                     /> */}
                     <span className="form-label">Department</span>
-                    <select className="form-control" name="form-field-name">
+                    <select
+                      className="form-control"
+                      onChange={this.changeDepartmentIdHandler}
+                    >
                       <option>---Choice---</option>
-                      {this.state.department.map((departments, i) => (
+                      {this.state.department.map((departments) => (
                         <option
-                          key={i}
-                          onChange={this.changeDepartmentHandler}
-                          value={departments.value}
+                          key={departments.departmentId}
+                          value={departments.id}
                         >
                           {departments.name}
                         </option>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f96ff655-a270-48fa-ba2c-75b8f31fe1b4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../api/src/components/CreateEmployeeComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/components/CreateEmployeeComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/components/UpdateEmployeComponent" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/components/UpdateEmployeComponent" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/services/EmployeeService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/services/EmployeeService.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="spring-beans.schema" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2EkCeXxWPpXK8eRuZDXsPk3BTlU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f96ff655-a270-48fa-ba2c-75b8f31fe1b4" name="Default Changelist" comment="" />
+      <created>1663130290580</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663130290580</updated>
+      <workItem from="1663130295730" duration="134000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="634" y="251" key="FileChooserDialogImpl" timestamp="1663130429047">
+      <screen x="0" y="0" width="1707" height="1019" />
+    </state>
+    <state x="634" y="251" key="FileChooserDialogImpl/0.0.1707.1019@0.0.1707.1019" timestamp="1663130429047" />
+    <state x="304" y="70" key="new project wizard" timestamp="1663130430532">
+      <screen x="0" y="0" width="1707" height="1019" />
+    </state>
+    <state x="304" y="70" key="new project wizard/0.0.1707.1019@0.0.1707.1019" timestamp="1663130430532" />
+  </component>
+</project>

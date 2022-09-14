@@ -9,9 +9,9 @@ class EmployeeService {
   getEmployees() {
     return axios.get(EMPLOYEE_API_BASE_URL);
   }
-getDepartmentId(departmentId) {
-  return axios.get(DEPARTMENT_API_BASE_URL + departmentId);
-}
+  getDepartmentId(departmentId) {
+    return axios.get(DEPARTMENT_API_BASE_URL + departmentId);
+  }
   createEmployee(employee) {
     return axios.post(EMPLOYEE_API_BASE_URL, employee);
   }

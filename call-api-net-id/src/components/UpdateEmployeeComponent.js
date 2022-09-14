@@ -7,9 +7,9 @@ class UpdateEmployeeComponent extends Component {
 
     this.state = {
       id: this.props.match.params.id,
-      firstName: "",
-      lastName: "",
-      emailId: "",
+      name: "",
+      dateBirth: "",
+      address: "",
     };
     this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
     this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
@@ -20,9 +20,9 @@ class UpdateEmployeeComponent extends Component {
     EmployeeService.getEmployeeById(this.state.id).then((res) => {
       let employee = res.data;
       this.setState({
-        firstName: employee.firstName,
-        lastName: employee.lastName,
-        emailId: employee.emailId,
+        name: employee.name,
+        dateBirth: employee.dateBirth,
+        address: employee.address,
       });
     });
   }
@@ -30,9 +30,9 @@ class UpdateEmployeeComponent extends Component {
   updateEmployee = (e) => {
     e.preventDefault();
     let employee = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      emailId: this.state.emailId,
+      name: this.state.name,
+      dateBirth: this.state.dateBirth,
+      address: this.state.address,
     };
     console.log("employee => " + JSON.stringify(employee));
     console.log("id => " + JSON.stringify(this.state.id));
@@ -42,15 +42,15 @@ class UpdateEmployeeComponent extends Component {
   };
 
   changeFirstNameHandler = (event) => {
-    this.setState({ firstName: event.target.value });
+    this.setState({ name: event.target.value });
   };
 
   changeLastNameHandler = (event) => {
-    this.setState({ lastName: event.target.value });
+    this.setState({ dateBirth: event.target.value });
   };
 
   changeEmailHandler = (event) => {
-    this.setState({ emailId: event.target.value });
+    this.setState({ address: event.target.value });
   };
 
   cancel() {
@@ -68,32 +68,33 @@ class UpdateEmployeeComponent extends Component {
               <div className="card-body">
                 <form>
                   <div className="form-group">
-                    <label> First Name: </label>
+                    <label> Name : </label>
                     <input
                       placeholder="First Name"
-                      name="firstName"
+                      name="name"
                       className="form-control"
-                      value={this.state.firstName}
+                      value={this.state.name}
                       onChange={this.changeFirstNameHandler}
                     />
                   </div>
                   <div className="form-group">
-                    <label> Last Name: </label>
+                    <label> dateBirth : </label>
                     <input
+                      type="date"
                       placeholder="Last Name"
-                      name="lastName"
+                      name="dateBirth"
                       className="form-control"
-                      value={this.state.lastName}
+                      value={this.state.dateBirth}
                       onChange={this.changeLastNameHandler}
                     />
                   </div>
                   <div className="form-group">
-                    <label> Email Id: </label>
+                    <label> address: </label>
                     <input
                       placeholder="Email Address"
-                      name="emailId"
+                      name="address"
                       className="form-control"
-                      value={this.state.emailId}
+                      value={this.state.address}
                       onChange={this.changeEmailHandler}
                     />
                   </div>

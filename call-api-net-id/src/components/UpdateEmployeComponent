@@ -10,25 +10,33 @@ class UpdateEmployeeComponent extends Component {
       name: "",
       dateBirth: "",
       address: "",
-      department: [],
+      departmentId: this.props.match.params.id,
+      // department: [],
     };
     this.changeNameHandler = this.changeNameHandler.bind(this);
     this.changeDateBirthHandler = this.changeDateBirthHandler.bind(this);
     this.changeDepartmentHandler = this.changeDepartmentHandler.bind(this);
     this.changeAddressHandler = this.changeAddressHandler.bind(this);
+    this.changeDepartmentIdHandler = this.changeDepartmentIdHandler.bind(this);
     this.updateEmployee = this.updateEmployee.bind(this);
   }
-
+  // async getOptions() {
+  //   EmployeeService.getDepartment().then((res) => {
+  //     this.setState({ department: res.data });
+  //   });
+  // }
   componentDidMount() {
+    // this.getOptions();
     EmployeeService.getEmployeeById(this.state.id).then((res) => {
       let employee = res.data;
       this.setState({
         name: employee.name,
         dateBirth: employee.dateBirth,
         address: employee.address,
-        department: employee.department.name,
+        departmentId: employee.departmentId,
       });
     });
+    console.log(employee);
   }
 
   updateEmployee = (e) => {
@@ -37,15 +45,22 @@ class UpdateEmployeeComponent extends Component {
       name: this.state.name,
       dateBirth: this.state.dateBirth,
       address: this.state.address,
-      department: this.state.department.name,
+      // department: this.state.department,
+      departmentId: this.state.departmentId,
     };
     console.log("employee => " + JSON.stringify(employee));
     console.log("id => " + JSON.stringify(this.state.id));
+    console.log(employee);
     EmployeeService.updateEmployee(employee, this.state.id).then((res) => {
       this.props.history.push("/employees");
     });
   };
 
+  changeDepartmentIdHandler = (event) => {
+    console.log("sssssaid", event.target.value);
+    // this.setState({ departmentId: event.target.value });
+    this.setState({ departmentId: event.target.value });
+  };
   changeNameHandler = (event) => {
     this.setState({ name: event.target.value });
   };
@@ -57,8 +72,9 @@ class UpdateEmployeeComponent extends Component {
   changeAddressHandler = (event) => {
     this.setState({ address: event.target.value });
   };
+
   changeDepartmentHandler = (event) => {
-    console.log(event.value);
+    console.log("ss", event.target.value);
     this.setState({ department: event.target.value });
   };
 
@@ -67,23 +83,20 @@ class UpdateEmployeeComponent extends Component {
   }
 
   render() {
-    let options = this.state.department.map(function (departments) {
-      return { value: departments.name, label: departments.name };
-    });
     return (
       <div>
         <br></br>
         <div className="container">
           <div className="row">
             <div className="card col-md-6 offset-md-3 offset-md-3">
-              {this.getTitle()}
+              <h3 className="text-center">Update Employee</h3>
               <div className="card-body">
                 <form>
                   <div className="form-group">
                     <label> Name: </label>
                     <input
-                      placeholder=" Name"
-                      name="name"
+                      placeholder="First Name"
+                      name="firstName"
                       className="form-control"
                       value={this.state.name}
                       onChange={this.changeNameHandler}
@@ -92,7 +105,6 @@ class UpdateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Date of birth: </label>
                     <input
-                      type="date"
                       placeholder="Last Name"
                       name="lastName"
                       className="form-control"
@@ -103,8 +115,8 @@ class UpdateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Address: </label>
                     <input
-                      placeholder=" Address"
-                      name="address"
+                      placeholder="Email Address"
+                      name="emailId"
                       className="form-control"
                       value={this.state.address}
                       onChange={this.changeAddressHandler}
@@ -118,22 +130,20 @@ class UpdateEmployeeComponent extends Component {
                       options={options}
                     /> */}
                     <span className="form-label">Department</span>
-                    <select className="form-control" name="form-field-name">
+                    <select
+                      className="form-control"
+                      onChange={this.changeDepartmentIdHandler}
+                    >
                       <option>---Choice---</option>
-                      {this.state.department.map((departments, i) => (
-                        <option
-                          key={i}
-                          onChange={this.changeDepartmentHandler}
-                          value={departments.value}
-                        >
-                          {departments.name}
-                        </option>
-                      ))}
+
+                      <option key={departmentId} value={departmentId}>
+                        {departmentId}
+                      </option>
                     </select>
                   </div>
                   <button
                     className="btn btn-success"
-                    onClick={this.saveOrUpdateEmployee}
+                    onClick={this.updateEmployee}
                   >
                     Save
                   </button>
