@@ -8,6 +8,7 @@ class ListEmployeeComponent extends Component {
     this.state = {
       employees: [],
     };
+    console.log(this.state.vehicles);
     this.addEmployee = this.addEmployee.bind(this);
     this.editEmployee = this.editEmployee.bind(this);
     this.deleteEmployee = this.deleteEmployee.bind(this);
@@ -32,9 +33,9 @@ class ListEmployeeComponent extends Component {
   componentDidMount() {
     EmployeeService.getEmployees().then((res) => {
       this.setState({ employees: res.data });
+      console.log(res);
     });
   }
-
   addEmployee() {
     this.props.history.push("/add-employee/_add");
   }
@@ -58,6 +59,7 @@ class ListEmployeeComponent extends Component {
                 <th scope="col"> Name</th>
                 <th scope="col"> dateBirth</th>
                 <th scope="col"> address </th>
+                <th scope="col"> Department </th>
                 <th scope="col"> Update</th>
                 <th scope="col"> Delete</th>
                 <th scope="col"> View</th>
@@ -70,6 +72,7 @@ class ListEmployeeComponent extends Component {
                   <td> {employee.name} </td>
                   <td> {employee.dateBirth}</td>
                   <td> {employee.address}</td>
+                  <td>{employee.department.name} </td>
                   <td>
                     <button
                       onClick={() => this.editEmployee(employee.id)}
@@ -103,56 +106,6 @@ class ListEmployeeComponent extends Component {
               ))}
             </tbody>
           </table>
-        </div>
-
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Modal title
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <p>Do you really want to delete employee?</p>
-                <span className="text-danger font-weight-bold">
-                  {this.props.id}
-                </span>
-                {/* <span class="text-danger font-weight-bold">{{name}}</span> */}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  onClick={this.deleteEmployee}
-                  type="button"
-                  className="btn btn-primary"
-                  data-dismiss="modal"
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );

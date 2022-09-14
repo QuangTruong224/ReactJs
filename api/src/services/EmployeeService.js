@@ -1,8 +1,11 @@
 import axios from "axios";
 
 const EMPLOYEE_API_BASE_URL = "https://localhost:7032/api/Employee";
-
+const DEPARTMENT_API_BASE_URL = "https://localhost:7032/api/Department";
 class EmployeeService {
+  getDepartment() {
+    return axios.get(DEPARTMENT_API_BASE_URL);
+  }
   getEmployees() {
     return axios.get(EMPLOYEE_API_BASE_URL);
   }
