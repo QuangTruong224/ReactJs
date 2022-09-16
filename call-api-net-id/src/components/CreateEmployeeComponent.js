@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import EmployeeService from "../services/EmployeeService";
-import Select from "react-select";
+// import Select from "react-select";
 class CreateEmployeeComponent extends Component {
   constructor(props) {
     super(props);
@@ -18,26 +18,27 @@ class CreateEmployeeComponent extends Component {
     this.changeAddressHandler = this.changeAddressHandler.bind(this);
     this.changeDepartmentIdHandler = this.changeDepartmentIdHandler.bind(this);
     this.saveOrUpdateEmployee = this.saveOrUpdateEmployee.bind(this);
+    console.log("data create", this.state.departmentId);
     // console.log("sss", this.state.department);
   }
 
-  // async getOptions() {
-  //   EmployeeService.getDepartmentId(this.state.departmentId).then((res) => {
-  //     // this.setState({ departmentId: res.data });
-  //     this.state.departmentId = res.data;
-  //   });
-  // }
-  // step 3
+  getOptions() {
+    EmployeeService.getDepartment().then((res) => {
+      this.setState({ department: res.data });
+      console.log("goi api", this.state.department);
+    });
+  }
+
   componentDidMount() {
-    // step 4
     if (this.state.id === "_add") {
-      EmployeeService.getDepartment().then((res) => {
-        this.setState({ department: res.data });
-        // this.department = res.data;
-        console.log("s1232", this.state.department);
-      });
+      this.getOptions();
+      // EmployeeService.getDepartment().then((res) => {
+      //   this.setState({ department: res.data });
+      //   console.log("goi api", this.state.department);
+      // });
       return;
     } else {
+      // this.getOptions()
       EmployeeService.getEmployeeById(this.state.id).then((res) => {
         let employee = res.data;
         this.setState({
@@ -45,6 +46,7 @@ class CreateEmployeeComponent extends Component {
           dateBirth: employee.dateBirth,
           address: employee.address,
           department: employee.department,
+          departmentId: employee.departmentId,
         });
       });
     }
@@ -55,30 +57,29 @@ class CreateEmployeeComponent extends Component {
       name: this.state.name,
       dateBirth: this.state.dateBirth,
       address: this.state.address,
-      // department: this.state.department,
+      department: this.state.department,
       departmentId: this.state.departmentId,
     };
 
     console.log("employee => " + JSON.stringify(employee));
     console.log(employee);
-    if (this.state.id === "_add") {
-      // this.getOptions();
-      EmployeeService.createEmployee(employee).then((res) => {
-        this.props.history.push("/employees");
-        console.log(res);
-      });
-    } else {
-      EmployeeService.updateEmployee(employee, this.state.id).then((res) => {
-        this.props.history.push("/employees");
-      });
-    }
+    // if (this.state.id === "_add") {
+    EmployeeService.createEmployee(employee).then((res) => {
+      this.props.history.push("/employees");
+      console.log(res);
+    });
+    // } else {
+    //   EmployeeService.updateEmployee(employee, this.state.id).then((res) => {
+    //     this.props.history.push("/employees");
+    //   });
+    // }
   };
   changeDepartmentIdHandler = (event) => {
     console.log("sssid", event.target.value);
-    // this.setState({ departmentId: event.target.value });
     this.setState({ departmentId: event.target.value });
   };
   changeNameHandler = (event) => {
+    console.log("sssssaid", event.target.value);
     this.setState({ name: event.target.value });
   };
 
@@ -87,6 +88,7 @@ class CreateEmployeeComponent extends Component {
   };
 
   changeAddressHandler = (event) => {
+    console.log("create address", event.target.value);
     this.setState({ address: event.target.value });
   };
 
@@ -122,6 +124,7 @@ class CreateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Name: </label>
                     <input
+                      type="text"
                       placeholder=" Name"
                       name="name"
                       className="form-control"
@@ -134,7 +137,7 @@ class CreateEmployeeComponent extends Component {
                     <input
                       type="date"
                       placeholder="Last Name"
-                      name="lastName"
+                      name="dateBirth"
                       className="form-control"
                       value={this.state.dateBirth}
                       onChange={this.changeDateBirthHandler}
@@ -143,6 +146,7 @@ class CreateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Address: </label>
                     <input
+                      type="text"
                       placeholder=" Address"
                       name="address"
                       className="form-control"
@@ -163,23 +167,23 @@ class CreateEmployeeComponent extends Component {
                       onChange={this.changeDepartmentIdHandler}
                     >
                       <option>---Choice---</option>
+
                       {this.state.department.map((departments) => (
-                        <option
-                          key={departments.departmentId}
-                          value={departments.id}
-                        >
+                        <option key={departments.id} value={departments.id}>
                           {departments.name}
                         </option>
                       ))}
                     </select>
                   </div>
                   <button
+                    type="submit"
                     className="btn btn-success"
                     onClick={this.saveOrUpdateEmployee}
                   >
                     Save
                   </button>
                   <button
+                    type="submit"
                     className="btn btn-danger"
                     onClick={this.cancel.bind(this)}
                     style={{ marginLeft: "10px" }}

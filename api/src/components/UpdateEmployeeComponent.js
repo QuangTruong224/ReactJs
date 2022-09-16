@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import EmployeeService from "../services/EmployeeService";
+// import Select from "react-select";
 
 class UpdateEmployeeComponent extends Component {
   constructor(props) {
@@ -10,47 +11,80 @@ class UpdateEmployeeComponent extends Component {
       name: "",
       dateBirth: "",
       address: "",
+      departmentId: this.props.match.params.id,
+      department: [],
+
+      // employee: {},
     };
-    this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
-    this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
+    this.getOptions2();
+    this.changeNameHandler = this.changeNameHandler.bind(this);
+    this.changeDateBirthHandler = this.changeDateBirthHandler.bind(this);
+    this.changeDepartmentHandler = this.changeDepartmentHandler.bind(this);
+    this.changeAddressHandler = this.changeAddressHandler.bind(this);
+    this.changeDepartmentIdHandler = this.changeDepartmentIdHandler.bind(this);
     this.updateEmployee = this.updateEmployee.bind(this);
   }
-
+  getOptions2() {
+    EmployeeService.getDepartment().then((res) => {
+      this.setState({ department: res.data });
+    });
+    return;
+  }
   componentDidMount() {
     EmployeeService.getEmployeeById(this.state.id).then((res) => {
-      let employee = res.data;
+      console.log(this.state.id);
+      this.setState({ employee: res.data });
+      let employee = res.data[0];
       this.setState({
         name: employee.name,
         dateBirth: employee.dateBirth,
         address: employee.address,
+        departmentId: employee.departmentId,
+        // department: employee.department,
       });
+      console.log("state", this.state);
     });
   }
 
   updateEmployee = (e) => {
     e.preventDefault();
+
     let employee = {
+      id: this.state.id,
       name: this.state.name,
       dateBirth: this.state.dateBirth,
       address: this.state.address,
+      departmentId: this.state.departmentId,
     };
+
     console.log("employee => " + JSON.stringify(employee));
     console.log("id => " + JSON.stringify(this.state.id));
+    console.log(employee);
+
     EmployeeService.updateEmployee(employee, this.state.id).then((res) => {
       this.props.history.push("/employees");
     });
   };
 
-  changeFirstNameHandler = (event) => {
+  changeDepartmentIdHandler = (event) => {
+    console.log("sssssaid", event.target.value);
+    this.setState({ departmentId: event.target.value });
+  };
+  changeNameHandler = (event) => {
     this.setState({ name: event.target.value });
   };
 
-  changeLastNameHandler = (event) => {
+  changeDateBirthHandler = (event) => {
     this.setState({ dateBirth: event.target.value });
   };
 
-  changeEmailHandler = (event) => {
+  changeAddressHandler = (event) => {
     this.setState({ address: event.target.value });
+  };
+
+  changeDepartmentHandler = (event) => {
+    console.log("ss", event.target.value);
+    this.setState({ department: event.target.value });
   };
 
   cancel() {
@@ -68,37 +102,51 @@ class UpdateEmployeeComponent extends Component {
               <div className="card-body">
                 <form>
                   <div className="form-group">
-                    <label> Name : </label>
+                    <label> Name: </label>
                     <input
-                      placeholder="First Name"
-                      name="name"
+                      placeholder=" Name"
+                      name="Name"
                       className="form-control"
                       value={this.state.name}
-                      onChange={this.changeFirstNameHandler}
+                      onChange={this.changeNameHandler}
                     />
                   </div>
                   <div className="form-group">
-                    <label> dateBirth : </label>
+                    <label> Date of birth: </label>
                     <input
                       type="date"
-                      placeholder="Last Name"
-                      name="dateBirth"
+                      placeholder="Date"
+                      name="Date"
                       className="form-control"
                       value={this.state.dateBirth}
-                      onChange={this.changeLastNameHandler}
+                      onChange={this.changeDateBirthHandler}
                     />
                   </div>
                   <div className="form-group">
-                    <label> address: </label>
+                    <label> Address: </label>
                     <input
-                      placeholder="Email Address"
-                      name="address"
+                      placeholder="Address"
+                      name="Address"
                       className="form-control"
                       value={this.state.address}
-                      onChange={this.changeEmailHandler}
+                      onChange={this.changeAddressHandler}
                     />
                   </div>
-
+                  <div className="form-group">
+                    <select
+                      value={this.state.departmentId}
+                      // value={this.state.department.id}
+                      className="form-control"
+                      onChange={this.changeDepartmentIdHandler}
+                    >
+                      <option>---Choice---</option>
+                      {this.state.department?.map((departments) => (
+                        <option key={departments.id} value={departments.id}>
+                          {departments.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <button
                     className="btn btn-success"
                     onClick={this.updateEmployee}

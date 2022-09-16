@@ -26,7 +26,7 @@ class ListEmployeeComponent extends Component {
     this.props.history.push(`/view-employee/${id}`);
   }
   editEmployee(id) {
-    this.props.history.push(`/add-employee/${id}`);
+    this.props.history.push(`/update-employee/${id}`);
   }
 
   componentDidMount() {

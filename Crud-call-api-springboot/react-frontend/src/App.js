@@ -6,6 +6,7 @@ import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 import CreateEmployeeComponent from "./components/CreateEmployeeComponent";
 import ViewEmployeeComponent from "./components/ViewEmployeeComponent";
+import UpdateEmployeeComponent from "./components/UpdateEmployeeComponent";
 
 function App() {
   return (
@@ -24,7 +25,10 @@ function App() {
               path="/view-employee/:id"
               component={ViewEmployeeComponent}
             ></Route>
-            {/* <Route path = "/update-employee/:id" component = {UpdateEmployeeComponent}></Route> */}
+            <Route
+              path="/update-employee/:id"
+              component={UpdateEmployeeComponent}
+            ></Route>
           </Switch>
         </div>
         <FooterComponent />

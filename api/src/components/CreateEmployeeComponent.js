@@ -4,16 +4,12 @@ import EmployeeService from "../services/EmployeeService";
 class CreateEmployeeComponent extends Component {
   constructor(props) {
     super(props);
-    // this.departmentList = [];
-    //  departments:Array<string>  [];
-    //  departmentList: any;
-
     this.state = {
-      // step 2
       id: this.props.match.params.id,
       name: "",
       dateBirth: "",
       address: "",
+      departmentId: this.props.match.params.id,
       department: [],
     };
     this.changeNameHandler = this.changeNameHandler.bind(this);
@@ -22,35 +18,37 @@ class CreateEmployeeComponent extends Component {
     this.changeAddressHandler = this.changeAddressHandler.bind(this);
     this.changeDepartmentIdHandler = this.changeDepartmentIdHandler.bind(this);
     this.saveOrUpdateEmployee = this.saveOrUpdateEmployee.bind(this);
+    console.log("data create", this.state.departmentId);
     // console.log("sss", this.state.department);
   }
 
-  // async getOptions() {
-  //   EmployeeService.getDepartmentId(this.state.departmentId).then((res) => {
-  //     // this.setState({ departmentId: res.data });
-  //     this.state.departmentId = res.data;
-  //   });
-  // }
-  // step 3
+  getOptions() {
+    EmployeeService.getDepartment().then((res) => {
+      this.setState({ department: res.data });
+      console.log("goi api", this.state.department);
+    });
+    return;
+  }
+
   componentDidMount() {
-    // step 4
     if (this.state.id === "_add") {
-      EmployeeService.getDepartment().then((res) => {
-        this.setState({ department: res.data });
-        // this.department = res.data;
-        console.log("s1232", this.state.department);
+      this.getOptions();
+      EmployeeService.getEmployees().then((res) => {
+        this.setState({ employees: res.data });
+        console.log(res);
       });
-      return;
     } else {
-      EmployeeService.getEmployeeById(this.state.id).then((res) => {
-        let employee = res.data;
-        this.setState({
-          name: employee.name,
-          dateBirth: employee.dateBirth,
-          address: employee.address,
-          department: employee.department,
+      this.getOptions() &&
+        EmployeeService.getEmployeeById(this.state.id).then((res) => {
+          let employee = res.data;
+          this.setState({
+            name: employee.name,
+            dateBirth: employee.dateBirth,
+            address: employee.address,
+            department: employee.department,
+            departmentId: employee.departmentId,
+          });
         });
-      });
     }
   }
   saveOrUpdateEmployee = (e) => {
@@ -59,13 +57,13 @@ class CreateEmployeeComponent extends Component {
       name: this.state.name,
       dateBirth: this.state.dateBirth,
       address: this.state.address,
-      // department: this.state.department,
+      department: this.state.department,
+      departmentId: this.state.departmentId,
     };
 
     console.log("employee => " + JSON.stringify(employee));
     console.log(employee);
     if (this.state.id === "_add") {
-      // this.getOptions();
       EmployeeService.createEmployee(employee).then((res) => {
         this.props.history.push("/employees");
         console.log(res);
@@ -78,10 +76,10 @@ class CreateEmployeeComponent extends Component {
   };
   changeDepartmentIdHandler = (event) => {
     console.log("sssid", event.target.value);
-    // this.setState({ departmentId: event.target.value });
     this.setState({ departmentId: event.target.value });
   };
   changeNameHandler = (event) => {
+    console.log("sssssaid", event.target.value);
     this.setState({ name: event.target.value });
   };
 
@@ -90,6 +88,7 @@ class CreateEmployeeComponent extends Component {
   };
 
   changeAddressHandler = (event) => {
+    console.log("create address", event.target.value);
     this.setState({ address: event.target.value });
   };
 
@@ -125,6 +124,7 @@ class CreateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Name: </label>
                     <input
+                      type="text"
                       placeholder=" Name"
                       name="name"
                       className="form-control"
@@ -137,7 +137,7 @@ class CreateEmployeeComponent extends Component {
                     <input
                       type="date"
                       placeholder="Last Name"
-                      name="lastName"
+                      name="dateBirth"
                       className="form-control"
                       value={this.state.dateBirth}
                       onChange={this.changeDateBirthHandler}
@@ -146,6 +146,7 @@ class CreateEmployeeComponent extends Component {
                   <div className="form-group">
                     <label> Address: </label>
                     <input
+                      type="text"
                       placeholder=" Address"
                       name="address"
                       className="form-control"
@@ -156,9 +157,9 @@ class CreateEmployeeComponent extends Component {
                   <div className="form-group">
                     {/* <Select
                       name="form-field-name"
-                      value={this.departmentList}
-                      onChange={this.changeDepartmentHandler}
-                      options={options}
+                      value={this.state.departmentId}
+                      onChange={this.changeDepartmentIdHandler}
+                      options={departmentId}
                     /> */}
                     <span className="form-label">Department</span>
                     <select
@@ -166,23 +167,23 @@ class CreateEmployeeComponent extends Component {
                       onChange={this.changeDepartmentIdHandler}
                     >
                       <option>---Choice---</option>
+
                       {this.state.department.map((departments) => (
-                        <option
-                          key={departments.departmentId}
-                          value={departments.id}
-                        >
+                        <option key={departments.id} value={departments.id}>
                           {departments.name}
                         </option>
                       ))}
                     </select>
                   </div>
                   <button
+                    type="submit"
                     className="btn btn-success"
                     onClick={this.saveOrUpdateEmployee}
                   >
                     Save
                   </button>
                   <button
+                    type="submit"
                     className="btn btn-danger"
                     onClick={this.cancel.bind(this)}
                     style={{ marginLeft: "10px" }}

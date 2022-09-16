@@ -8,7 +8,6 @@ class ListEmployeeComponent extends Component {
     this.state = {
       employees: [],
     };
-    console.log(this.state.vehicles);
     this.addEmployee = this.addEmployee.bind(this);
     this.editEmployee = this.editEmployee.bind(this);
     this.deleteEmployee = this.deleteEmployee.bind(this);
@@ -27,13 +26,12 @@ class ListEmployeeComponent extends Component {
     this.props.history.push(`/view-employee/${id}`);
   }
   editEmployee(id) {
-    this.props.history.push(`/add-employee/${id}`);
+    this.props.history.push(`/update-employee/${id}`);
   }
 
   componentDidMount() {
     EmployeeService.getEmployees().then((res) => {
       this.setState({ employees: res.data });
-      console.log(res);
     });
   }
   addEmployee() {
@@ -75,6 +73,7 @@ class ListEmployeeComponent extends Component {
                   <td>{employee.department.name} </td>
                   <td>
                     <button
+                      type="submit"
                       onClick={() => this.editEmployee(employee.id)}
                       className="btn btn-info"
                     >
@@ -83,7 +82,7 @@ class ListEmployeeComponent extends Component {
                   </td>
                   <td>
                     <button
-                      type="button"
+                      type="submit"
                       data-toggle="modal"
                       data-target="#exampleModal"
                       style={{ marginLeft: "5px" }}
@@ -95,6 +94,7 @@ class ListEmployeeComponent extends Component {
                   </td>
                   <td>
                     <button
+                      type="submit"
                       style={{ marginLeft: "5px" }}
                       onClick={() => this.viewEmployee(employee.id)}
                       className="btn btn-info"
