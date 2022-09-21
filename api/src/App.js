@@ -14,6 +14,7 @@ class App extends React.Component {
       <div>
         <Router>
           <HeaderComponent />
+          <br></br>
           <div className="container">
             <Switch>
               <Route path="/" exact component={ListEmployeeComponent}></Route>
@@ -35,6 +36,8 @@ class App extends React.Component {
               ></Route>
             </Switch>
           </div>
+          <br></br>
+          <br></br>
           <FooterComponent />
         </Router>
       </div>

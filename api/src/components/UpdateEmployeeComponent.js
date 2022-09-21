@@ -34,7 +34,8 @@ class UpdateEmployeeComponent extends Component {
     EmployeeService.getEmployeeById(this.state.id).then((res) => {
       console.log(this.state.id);
       this.setState({ employee: res.data });
-      let employee = res.data[0];
+      let employee = res.data;
+      // let employee = res.data[0];
       this.setState({
         name: employee.name,
         dateBirth: employee.dateBirth,
