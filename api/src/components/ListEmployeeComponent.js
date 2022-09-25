@@ -15,9 +15,10 @@ class ListEmployeeComponent extends Component {
       nameSearch: "",
       dateBirthSearch: "",
       idDepartmentSearch: "",
-      pageSize: 4,
-      next: null,
+      pageSize: 9,
+      nextPage: null,
       previous: null,
+      pageNumber: 1,
       // page: 0,
       // pages: 0,
     };
@@ -32,21 +33,16 @@ class ListEmployeeComponent extends Component {
     console.log("sssid", event.target.value);
     this.setState({ departmentId: event.target.value });
   };
-  // static getDerivedStateFromProps(props, state) {
-  //   console.log("state 1", state);
-  //   console.log("state 2", props);
-  //   return state;
-  // }
   async getData(pageNumber = 1) {
     const url = `https://localhost:7218/api/Employee?PageNumber=${pageNumber}`;
     const response = await axios.get(url);
     // const { employees } = this.state;
-    const { next } = this.state;
-    // const { pageSize } = this.state;
-    // this.setState({ employees: response.data.data });
+    const { nextPage } = this.state;
+    const { previous } = this.state;
     this.setState({
-      // next: Math.floor(pageNumber + 1),
-      // previous: Math.floor(next - 1),
+      currentPage: pageNumber,
+      nextPage: pageNumber + 1,
+      previous: nextPage - 1,
 
       employees: response.data.data,
       // pages: Math.floor(employees.length / pageSize),
@@ -104,31 +100,12 @@ class ListEmployeeComponent extends Component {
     this.props.history.push("/add-employee/_add");
   }
 
-  // searchData = (key, value) => {
-  //   // console.log(searchValue);
-  //   const params = [];
-  //   if (key === "name") {
-  //     params.push(`name=${value}`);
-  //   }
-  //   if (key === "dateBirth") {
-  //     params.push(`dateBirth=${value}`);
-  //   }
-  //   if (key === "idDepartment") {
-  //     params.push(`idDepartment=${value}`);
-  //   }
-  //   const url = `https://localhost:7218/api/Employee?${params.join("&")}`;
-  //   console.log("e", url);
-  //   axios
-  //     .get(url)
-  //     .then((res) => {
-  //       this.setState({ employees: res.data.data });
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
   searchData = () => {
-    var url = "https://localhost:7218/api/Employee?";
+    this.getData();
+    var url = `https://localhost:7218/api/Employee?`;
     var params = [];
-    if (this.state.nameSearch) {
+    if (this.state.nameSearch || this.state.pageNumber) {
+      params.push(`pageNumber=${this.state.pageNumber}`);
       params.push(`name=${this.state.nameSearch}`);
     }
     if (this.state.dateBirthSearch) {
@@ -138,7 +115,6 @@ class ListEmployeeComponent extends Component {
       params.push(`idDepartment=${this.state.idDepartmentSearch}`);
     }
     url = url + `${params.join("&")}`;
-
     // const url = `https://localhost:7218/api/Employee?name=${nameSearch}&dateBirth=${dateBirthSearch}&idDepartment=${idDepartmentSearch}`;
     console.log("url", url);
     axios
@@ -223,7 +199,7 @@ class ListEmployeeComponent extends Component {
                 <th scope="col"> Department </th>
                 <th scope="col"> Update</th>
                 <th scope="col"> Delete</th>
-                <th scope="col"> View</th>
+                {/* <th scope="col"> View</th> */}
               </tr>
             </thead>
             <tbody className="table-secondary">
@@ -257,7 +233,7 @@ class ListEmployeeComponent extends Component {
                           Delete{" "}
                         </button>
                       </td>
-                      <td>
+                      {/* <td>
                         <button
                           type="submit"
                           style={{ marginLeft: "5px" }}
@@ -266,7 +242,7 @@ class ListEmployeeComponent extends Component {
                         >
                           View{" "}
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })
@@ -284,19 +260,16 @@ class ListEmployeeComponent extends Component {
             </tbody>
           </table>
         </div>
-        <div className="mt-3">
+        <div className="mt">
           <Pagination
-            // activePage={this.state.employees.length / this.state.pageSize}
-            // itemsCoun
-            // pageSize={5}
             totalItemsCount={this.state.employees.length * this.state.pageSize}
-            pageRangeDisplayed={10}
             onChange={(pageNumber) => this.getData(pageNumber)}
             itemClass="page-link"
-            // disabledClass={nextPageText}
-            prevPageText={this.state.previous}
-            nextPageText={this.state.next}
-            // linkClass="page-link"
+            disabledClass
+            hideDisabled
+            hideNavigation
+            activePage={2}
+            linkClass="page-link"
           />
         </div>
       </div>
