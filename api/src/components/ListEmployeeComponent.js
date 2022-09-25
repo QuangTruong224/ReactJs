@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import EmployeeService from "../services/EmployeeService";
 import axios from "axios";
-import "./components/Paginate.css";
+
+import Pagination from "react-js-pagination";
+// import ReactPaginate from "react-paginate";
+
 class ListEmployeeComponent extends Component {
   constructor(props) {
     super(props);
@@ -9,9 +12,17 @@ class ListEmployeeComponent extends Component {
       employees: [],
       department: [],
       departmentId: this.props.match.params.id,
+      nameSearch: "",
+      dateBirthSearch: "",
+      idDepartmentSearch: "",
+      pageSize: 4,
+      next: null,
+      previous: null,
+      // page: 0,
+      // pages: 0,
     };
-
-    this.getOptions2();
+    // this.getOptions2();
+    // this.getData();
     this.addEmployee = this.addEmployee.bind(this);
     this.editEmployee = this.editEmployee.bind(this);
     this.deleteEmployee = this.deleteEmployee.bind(this);
@@ -21,36 +32,31 @@ class ListEmployeeComponent extends Component {
     console.log("sssid", event.target.value);
     this.setState({ departmentId: event.target.value });
   };
+  // static getDerivedStateFromProps(props, state) {
+  //   console.log("state 1", state);
+  //   console.log("state 2", props);
+  //   return state;
+  // }
+  async getData(pageNumber = 1) {
+    const url = `https://localhost:7218/api/Employee?PageNumber=${pageNumber}`;
+    const response = await axios.get(url);
+    // const { employees } = this.state;
+    const { next } = this.state;
+    // const { pageSize } = this.state;
+    // this.setState({ employees: response.data.data });
+    this.setState({
+      // next: Math.floor(pageNumber + 1),
+      // previous: Math.floor(next - 1),
 
-  // handleDateChange = (event) => {
-  //   const dateBirth = event.target.value;
-  //   this.setState((prevState) => {
-  //     const employees = prevState.data.filter((element) => {
-  //       return element.dateBirth
-  //         .toLowerCase()
-  //         .includes(dateBirth?.toLowerCase());
-  //     });
-  //     return {
-  //       dateBirth,
-  //       employees,
-  //     };
-  //   });
-  // };
-  // handleNameDepartmentChange = (event) => {
-  //   const nameDepart = event.target.value;
-  //   this.setState((prevState) => {
-  //     const department = prevState.data.filter((element) => {
-  //       return element.nameDepart
-  //         .toLowerCase()
-  //         .includes(nameDepart.toLowerCase());
-  //     });
-  //     return {
-  //       nameDepart,
-  //       department,
-  //     };
-  //   });
-  // };
-
+      employees: response.data.data,
+      // pages: Math.floor(employees.length / pageSize),
+    });
+    console.log("est", response.data.data);
+  }
+  handlePageClick = (event) => {
+    let page = event.selected;
+    this.setState({ page });
+  };
   // handleInputChange = (event) => {
   //   const name = event.target.value;
   //   this.setState((prevState) => {
@@ -69,41 +75,14 @@ class ListEmployeeComponent extends Component {
     });
     return;
   }
-  componentDidMount() {
-    EmployeeService.getEmployees().then((res) => {
-      this.setState({ employees: res.data });
-    });
-    return;
-    // EmployeeService.getEmployees()
-    //   .then((res) => res.data)
-    //   .then((data) => {
-    //     // if (this.state.name === "") {
-    //     const { name } = this.state;
-    //     const employees = data.filter((element) => {
-    //       return element.name.toLowerCase().includes(name.toLowerCase());
-    //     });
-    //     this.setState({
-    //       data,
-    //       employees,
-    //     });
-    //     console.log("search", this.state.name);
-    //     // } else {
-    //     const { dateBirth } = this.state;
-    //     const dateSearch = data.filter((element) => {
-    //       return element.dateBirth
-    //         .toLowerCase()
-    //         .includes(dateBirth?.toLowerCase());
-    //     });
-    //     this.setState({ dateSearch });
-    //     // }
-    //     const { nameDepart } = this.state;
-    //     const nameDepartSearch = data.filter((element) => {
-    //       return element.nameDepart
-    //         .toLowerCase()
-    //         .includes(nameDepart.toLowerCase());
-    //     });
-    //     this.setState({ nameDepartSearch });
-    //   });
+  async componentDidMount() {
+    this.getOptions2();
+    await this.getData();
+    // EmployeeService.getEmployees().then((res) => {
+    //   this.setState({ employees: res.data });
+    // });
+    // return;
+    console.log("paginate222222", this.state.employees);
   }
   deleteEmployee(id) {
     EmployeeService.deleteEmployee(id).then((res) => {
@@ -124,33 +103,48 @@ class ListEmployeeComponent extends Component {
   addEmployee() {
     this.props.history.push("/add-employee/_add");
   }
-  searchData = (searchValue) => {
-    console.log(searchValue);
+
+  // searchData = (key, value) => {
+  //   // console.log(searchValue);
+  //   const params = [];
+  //   if (key === "name") {
+  //     params.push(`name=${value}`);
+  //   }
+  //   if (key === "dateBirth") {
+  //     params.push(`dateBirth=${value}`);
+  //   }
+  //   if (key === "idDepartment") {
+  //     params.push(`idDepartment=${value}`);
+  //   }
+  //   const url = `https://localhost:7218/api/Employee?${params.join("&")}`;
+  //   console.log("e", url);
+  //   axios
+  //     .get(url)
+  //     .then((res) => {
+  //       this.setState({ employees: res.data.data });
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+  searchData = () => {
+    var url = "https://localhost:7218/api/Employee?";
+    var params = [];
+    if (this.state.nameSearch) {
+      params.push(`name=${this.state.nameSearch}`);
+    }
+    if (this.state.dateBirthSearch) {
+      params.push(`dateBirth=${this.state.dateBirthSearch}`);
+    }
+    if (this.state.idDepartmentSearch) {
+      params.push(`idDepartment=${this.state.idDepartmentSearch}`);
+    }
+    url = url + `${params.join("&")}`;
+
+    // const url = `https://localhost:7218/api/Employee?name=${nameSearch}&dateBirth=${dateBirthSearch}&idDepartment=${idDepartmentSearch}`;
+    console.log("url", url);
     axios
-      .get(`https://localhost:7032/api/Employees/?name=` + searchValue)
+      .get(url)
       .then((res) => {
-        const employees = res.data;
-        this.setState({ employees });
-      })
-      .catch((error) => console.log(error));
-  };
-  searchDate = (searchValue) => {
-    console.log(searchValue);
-    axios
-      .get(`https://localhost:7032/api/Employees/?dateBirth=` + searchValue)
-      .then((res) => {
-        const employees = res.data;
-        this.setState({ employees });
-      })
-      .catch((error) => console.log(error));
-  };
-  searchDepartment = (searchValue) => {
-    console.log(searchValue);
-    axios
-      .get(`https://localhost:7032/api/Employees/?idDepart=` + searchValue)
-      .then((res) => {
-        const employees = res.data;
-        this.setState({ employees });
+        this.setState({ employees: res.data.data });
       })
       .catch((error) => console.log(error));
   };
@@ -164,7 +158,7 @@ class ListEmployeeComponent extends Component {
           <div className="col-3">
             <input
               onChange={(e) => {
-                this.searchData(e.target.value);
+                this.setState({ nameSearch: e.target.value });
               }}
               className="form-control mr-sm-2"
               type="search"
@@ -175,7 +169,7 @@ class ListEmployeeComponent extends Component {
           <div className="col-3">
             <input
               onChange={(e) => {
-                this.searchDate(e.target.value);
+                this.setState({ dateBirthSearch: e.target.value });
               }}
               className="form-control mr-sm-2"
               type="date"
@@ -187,23 +181,22 @@ class ListEmployeeComponent extends Component {
             <select
               className="form-control"
               onChange={(e) => {
-                this.searchDepartment(e.target.value);
+                this.setState({ idDepartmentSearch: e.target.value });
               }}
             >
               <option value="">---Choice---</option>
               {this.state.department.map((departments) => (
-                <option
-                  option={this.state.nameDepart}
-                  key={departments.id}
-                  value={departments.id}
-                >
+                <option key={departments.id} value={departments.id}>
                   {departments.name}
                 </option>
               ))}
             </select>
           </div>
           <div className="col-1">
-            <button className="btn btn-outline-info my-3 my-sm-9">
+            <button
+              onClick={this.searchData}
+              className="btn btn-outline-info my-3 my-sm-9"
+            >
               Search
             </button>
           </div>
@@ -291,23 +284,21 @@ class ListEmployeeComponent extends Component {
             </tbody>
           </table>
         </div>
-        <nav aria-label="Page navigation example">
-          <ul className="pagination justify-content-center">
-            <li className="page-item">
-              <button type="submit" className="page-link btn">
-                Previous
-              </button>
-            </li>
-            <li className="page-item">
-              <a className="page-link"></a>
-            </li>
-            <li className="page-item">
-              <button type="submit" className="page-link btn">
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
+        <div className="mt-3">
+          <Pagination
+            // activePage={this.state.employees.length / this.state.pageSize}
+            // itemsCoun
+            // pageSize={5}
+            totalItemsCount={this.state.employees.length * this.state.pageSize}
+            pageRangeDisplayed={10}
+            onChange={(pageNumber) => this.getData(pageNumber)}
+            itemClass="page-link"
+            // disabledClass={nextPageText}
+            prevPageText={this.state.previous}
+            nextPageText={this.state.next}
+            // linkClass="page-link"
+          />
+        </div>
       </div>
     );
   }

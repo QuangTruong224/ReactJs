@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const EMPLOYEE_API_BASE_URL = "https://localhost:7032/api/Employees";
-const DEPARTMENT_API_BASE_URL = "https://localhost:7032/api/Department";
+const EMPLOYEE_API_BASE_URL = "https://localhost:7218/api/Employee";
+const DEPARTMENT_API_BASE_URL = "https://localhost:7218/api/Department";
 class EmployeeService {
   getDepartment = () => {
     return axios.get(DEPARTMENT_API_BASE_URL);
